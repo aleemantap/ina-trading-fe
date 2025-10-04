@@ -16,7 +16,12 @@
 # next.js
 /.next/
 /out/
-
+.next
+.env
+.env.local
+.DS_Store
+npm-debug.log*
+yarn-error.log*
 # production
 /build
 
