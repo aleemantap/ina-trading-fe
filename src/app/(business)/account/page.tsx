@@ -7,7 +7,7 @@ export default function AccountCreationPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Step 1 - Account:", email, password);
+    // console.log("Step 1 - Account:", email, password);
   };
 
   return (

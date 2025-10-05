@@ -7,7 +7,7 @@ export default function EmailConfirmationPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Kirim reset password ke:", email);
+    //console.log("Kirim reset password ke:", email);
   };
 
   return (

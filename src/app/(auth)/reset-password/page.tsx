@@ -12,8 +12,8 @@ export default function ResetPasswordPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // TODO: tambahkan API call untuk reset password
-    console.log("Password baru:", password);
-    console.log("Konfirmasi:", confirm);
+    //console.log("Password baru:", password);
+    //console.log("Konfirmasi:", confirm);
   };
 
   return (

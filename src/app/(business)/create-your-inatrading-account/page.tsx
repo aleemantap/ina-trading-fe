@@ -24,7 +24,7 @@ export default function InatradingRegisterForm() {
       alert("Passwords do not match");
       return;
     }
-    console.log("Form submitted", form);
+    //console.log("Form submitted", form);
   };
 
   return (

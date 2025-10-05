@@ -21,7 +21,7 @@ export default function BusinessDetailsPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Business details:", form);
+    //console.log("Business details:", form);
     // TODO: API call atau redirect ke halaman berikutnya
   };
 

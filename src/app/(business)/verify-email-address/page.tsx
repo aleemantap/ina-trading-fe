@@ -11,7 +11,7 @@ export default function VerifyEmailForm() {
       alert("Please enter OTP");
       return;
     }
-    console.log("OTP Submitted:", otp);
+    //console.log("OTP Submitted:", otp);
   };
 
   return (

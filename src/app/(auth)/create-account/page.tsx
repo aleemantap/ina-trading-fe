@@ -55,7 +55,7 @@ export default function CreateAccountForm() {
      );
 
     // Jika semua validasi lolos
-    console.log("Form submitted:", form);
+    //console.log("Form submitted:", form);
     alert("Akun berhasil dibuat!");
   };
 
