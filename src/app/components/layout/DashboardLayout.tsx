@@ -1,14 +1,14 @@
 "use client";
 
-import Link from "next/link";
+// import Link from "next/link";
 import { ReactNode } from "react";
-import { LogOut, Settings, ShoppingBag, BarChart3 } from "lucide-react";
+// import { LogOut, Settings, ShoppingBag, BarChart3 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store/store";
 import { logout } from "../../../store/authSlice";
 import Image from "next/image";
-import { Icons } from "../icons/index";
+// import { Icons } from "../icons/index";
 import NavLeft from "./NavLeft"
 interface Props {
   children: ReactNode;
