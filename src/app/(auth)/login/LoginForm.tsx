@@ -98,6 +98,12 @@ export default function LoginPage() {
           Help?
         </a>
         <Link
+          href="/create-account"
+          className="text-sm text-blue-600 hover:underline"
+        >
+          Register
+        </Link>
+        <Link
           href="/forgot-password"
           className="text-sm text-blue-600 hover:underline"
         >

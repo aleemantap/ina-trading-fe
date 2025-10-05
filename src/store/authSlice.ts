@@ -34,8 +34,8 @@ export const login = createAsyncThunk(
     thunkAPI
   ) => {
     try {
-      const response = await apiPublic.post("/login", { email, password });
-      console.log("response-", response.data)
+      const response = await apiPublic.post("/seller/login", { email, password });
+      // console.log("response-", response.data)
       return response.data;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
@@ -47,17 +47,43 @@ export const login = createAsyncThunk(
 );
 
 // ✅ Thunk untuk register
+export const registerUser = createAsyncThunk(
+  "auth/registerUser",
+  async (
+    data: { name: string; email: string; mobile: string, password: string },
+    { rejectWithValue }
+  ) => {
+    try {
+      const res = await apiPublic.post("/seller/register", data);
+      return res.data; // { user, token }
+    } catch (err) {
+      return rejectWithValue(
+        err.response?.data?.responseDesc || "Register failed"
+      );
+    }
+  }
+);
+
 // export const registerUser = createAsyncThunk(
 //   "auth/registerUser",
 //   async (
-//     data: { name: string; email: string; password: string },
+//     formData: {
+//       name: string;
+//       email: string;
+//       mobile: string;
+//       password: string;
+//     },
 //     { rejectWithValue }
 //   ) => {
 //     try {
-//       const res = await apiPublic.post("/register", data);
-//       return res.data; // { user, token }
-//     } catch (err: unknown) {
-//       return rejectWithValue(err.response?.data?.message || "Register failed");
+//       // Ganti URL sesuai API kamu
+//       const response = await axios.post(
+//         "http://localhost:8080/api/register",
+//         formData
+//       );
+//       return response.data;
+//     } catch (error: any) {
+//       return rejectWithValue(error.response?.data || "Register failed");
 //     }
 //   }
 // );
@@ -87,8 +113,8 @@ const authSlice = createSlice({
     });
     builder.addCase(login.fulfilled, (state, action) => {
       state.loading = false;
-      state.user = action.payload.user;
-      state.token = action.payload.token.token;
+      state.user = action.payload;
+      state.token = action.payload.data.session;
       localStorage.setItem("token", action.payload.token.token);
     });
     builder.addCase(login.rejected, (state, action) => {
@@ -97,20 +123,22 @@ const authSlice = createSlice({
     });
 
     // register
-    // builder.addCase(registerUser.pending, (state) => {
-    //   state.loading = true;
-    //   state.error = null;
-    // });
-    // builder.addCase(registerUser.fulfilled, (state, action) => {
-    //   state.loading = false;
-    //   state.user = action.payload.user;
-    //   state.token = action.payload.token;
-    //   localStorage.setItem("token", action.payload.token);
-    // });
-    // builder.addCase(registerUser.rejected, (state, action: any) => {
-    //   state.loading = false;
-    //   state.error = action.payload;
-    // });
+    builder.addCase(registerUser.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(registerUser.fulfilled, (state, action) => {
+     
+      state.loading = false;
+      state.user = action.payload;
+      // state.user = action.payload.user;
+      // state.token = action.payload.token;
+      // localStorage.setItem("token", action.payload.token);
+    });
+    builder.addCase(registerUser.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload as string;
+    });
   },
 });
 
