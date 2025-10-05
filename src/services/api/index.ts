@@ -5,7 +5,7 @@ import { logout } from   "../../store/authSlice" //"@store/slices/authSlice";
 
 
 const baseURL = process.env.NEXT_PUBLIC_IP_ADDRESS + "/api/v1.0"; //"http://127.0.0.1:8000/api/v1"; //'http://192.168.100.101:8000/api/v1'; //"http://10.0.2.2:8000/api/v1" //'https://stg-jigo.semesta.digital/api/v1'
-console.log("baseURL", baseURL);
+// console.log("baseURL", baseURL);
 export const apiPublic = axios.create({
   baseURL,
   headers: {
@@ -14,13 +14,13 @@ export const apiPublic = axios.create({
   },
 });
 
-export const apiPublic2 = axios.create({
-  baseURL: "http://127.0.0.1:8000/api/v1",
-  headers: {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-  },
-});
+// export const apiPublic2 = axios.create({
+//   baseURL: "http://127.0.0.1:8000/api/v1",
+//   headers: {
+//     "Content-Type": "application/json",
+//     Accept: "application/json",
+//   },
+// });
 
 export const apiPrivate = axios.create({
   baseURL,

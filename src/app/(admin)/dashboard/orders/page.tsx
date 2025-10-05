@@ -14,8 +14,7 @@ export default function OrdersPage() {
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-6">Orders</h1>
 
-      <div className="grid gap-4">
-         
+      <div className="grid gap-4">        
        
       </div>
     </div>
