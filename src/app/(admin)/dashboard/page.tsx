@@ -3,9 +3,9 @@
 // import Topbar from "../../components/layout/Topbar";
 import OrdersAnalyticsChart from  "../../components/charts/OrdersAnalyticsChart";
 import EarningsPieChart from "../../components/charts/EarningsPieChart";
-import OrdersTable from "../../components/tables/OrdersTable";
-import { Card, CardContent } from "@/components/ui/card";
-import { FaBox, FaUsers, FaUndo } from "react-icons/fa";
+// import OrdersTable from "../../components/tables/OrdersTable";
+// import { Card, CardContent } from "@/components/ui/card";
+// import { FaBox, FaUsers, FaUndo } from "react-icons/fa";
 // import StatsSection from "../../components/charts/StatsSection";
 import StatsGroup from "../../components/charts/StatsGroup";
 
@@ -31,7 +31,7 @@ export default function DashboardHome() {
           <EarningsPieChart />
         </div>
       </div>
-      <OrdersTable />
+      {/* <OrdersTable /> */}
     </>
   );
 }
