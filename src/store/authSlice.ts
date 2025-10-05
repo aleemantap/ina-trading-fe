@@ -2,7 +2,7 @@
 
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 // import axios from "axios";
-import { apiPrivate, apiPublic } from "@/services/api";
+import { apiPublic } from "@/services/api";
 import { AxiosError } from "axios";
 
 // import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -57,36 +57,14 @@ export const registerUser = createAsyncThunk(
       const res = await apiPublic.post("/seller/register", data);
       return res.data; // { user, token }
     } catch (err) {
+      const error = err as AxiosError<{ responseDesc?: string }>; // ✅ perbaikan utama
       return rejectWithValue(
-        err.response?.data?.responseDesc || "Register failed"
+        error.response?.data?.responseDesc || "Register failed"
       );
     }
   }
 );
 
-// export const registerUser = createAsyncThunk(
-//   "auth/registerUser",
-//   async (
-//     formData: {
-//       name: string;
-//       email: string;
-//       mobile: string;
-//       password: string;
-//     },
-//     { rejectWithValue }
-//   ) => {
-//     try {
-//       // Ganti URL sesuai API kamu
-//       const response = await axios.post(
-//         "http://localhost:8080/api/register",
-//         formData
-//       );
-//       return response.data;
-//     } catch (error: any) {
-//       return rejectWithValue(error.response?.data || "Register failed");
-//     }
-//   }
-// );
 
 const authSlice = createSlice({
   name: "auth",

@@ -104,8 +104,12 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export default function HomePage() {
-  const token = cookies().get("token");
+
+
+export default async function HomePage() {
+  // const token = cookies().get("token");
+  const cookieStore = await cookies(); // ✅ tambahkan await
+  const token = cookieStore.get("token");
 
   if (token) {
     redirect("/dashboard");
