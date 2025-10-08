@@ -1,4 +1,6 @@
 import Link from "next/link";
+import Image from "next/image";
+import logo from "../../../public/logo.png";
 
 export default function BusinessLayout({
   children,
@@ -11,7 +13,8 @@ export default function BusinessLayout({
       <header className="bg-[#6B6FF1] py-3 px-40 flex items-center justify-between h-12">
         {/* Logo */}
         <div className="flex items-center">
-          <img src="/logo.png" alt="INA Trading" className="h-12" />
+          {/* <img src="/logo.png" alt="INA Trading" className="h-12" /> */}
+          <Image className="h-22 w-54" src={logo} alt="logo" />
         </div>
 
         {/* Steps */}

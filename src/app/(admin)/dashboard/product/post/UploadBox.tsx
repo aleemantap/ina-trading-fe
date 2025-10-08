@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 
 const UploadBox = () => {
   const [images, setImages] = useState<(string | null)[]>(Array(7).fill(null)); // 7 slot awal
@@ -31,10 +32,15 @@ const UploadBox = () => {
           className="w-24 h-24 flex items-center justify-center border-2 border-dashed border-gray-400 rounded-md cursor-pointer hover:border-blue-500"
         >
           {img ? (
-            <img
+            // <img
+            //   src={img}
+            //   alt="uploaded"
+            //   className="w-full h-full object-cover rounded-md"
+            // />
+            <Image
+              className="w-full h-full object-cover rounded-md"
               src={img}
               alt="uploaded"
-              className="w-full h-full object-cover rounded-md"
             />
           ) : (
             <span className="text-gray-400 text-3xl">+</span>

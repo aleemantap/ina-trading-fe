@@ -1,20 +1,21 @@
 "use client";
 
-import { useState } from "react";
-
+// import { useState } from "react";
+import Image from "next/image";
+import logo from "../../../../public/logo.png";
 export default function AccountNotFoundPage() {
-  const [email, setEmail] = useState("");
+  // const [email, setEmail] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    //console.log("Kirim reset password ke:", email);
-  };
+  // const handleSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   //console.log("Kirim reset password ke:", email);
+  // };
 
   return (
     <>
       <div className="w-full max-w-md rounded-lg border bg-white p-8 shadow">
         <div className="mb-6 flex justify-center">
-          <img src="/logo.png" alt="Logo" className="h-15" />
+          <Image className="h-22 w-54" src={logo} alt="logo" />;
         </div>
         <h1 className="mb-1 text-2xl font-semibold">Your Account Not Found</h1>
         <p className="text-sm text-gray-600">

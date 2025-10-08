@@ -1,12 +1,11 @@
 "use client";
 import { useState } from "react";
-import { Plus, Edit2, Search, ChevronDown } from "lucide-react";
+import { Plus,  Search } from "lucide-react";
 import plus from "../../../../../assets/plus.png";
 import edit1 from "../../../../../assets/edit1.png";
-import ProductModelFormParent from "./ProductModelFormParent";
-
-// import UploadBox from "./UploadBox";
+// import ProductModelFormParent from "./ProductModelFormParent";
 import Image from "next/image";
+
 interface InfoField {
   id: number;
   label: string;
@@ -18,9 +17,9 @@ export default function PostProduct() {
   const [otherImages, setOtherImages] = useState<(File | null)[]>(
     Array(7).fill(null) // ← 7 slot kosong default
   );
-  const [images, setImages] = useState<(string | null)[]>(Array(7).fill(null));
+  // const [images, setImages] = useState<(string | null)[]>(Array(7).fill(null));
 
-  const [extraOtherImages, setExtraOtherImages] = useState<File[]>([]); // slot dinamis
+  // const [extraOtherImages, setExtraOtherImages] = useState<File[]>([]); // slot dinamis
 
    const [infoFields, setInfoFields] = useState<InfoField[]>([
      { id: 1, label: "Brand", value: "" },
@@ -53,14 +52,14 @@ export default function PostProduct() {
       );
     };
 
-    const handleAddField = () => {
-      const newField: InfoField = {
-        id: Date.now(),
-        label: "",
-        value: "",
-      };
-      setInfoFields([...infoFields, newField]);
-    };
+    // const handleAddField = () => {
+    //   const newField: InfoField = {
+    //     id: Date.now(),
+    //     label: "",
+    //     value: "",
+    //   };
+    //   setInfoFields([...infoFields, newField]);
+    // };
 
   const handlePrimaryUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -85,15 +84,15 @@ export default function PostProduct() {
     }
   };
 
-   const handleUpload = (file: File, index: number) => {
-     const reader = new FileReader();
-     reader.onload = () => {
-       const newImages = [...images];
-       newImages[index] = reader.result as string;
-       setImages([...newImages, null]); // tambah slot upload baru di akhir
-     };
-     reader.readAsDataURL(file);
-   };
+  //  const handleUpload = (file: File, index: number) => {
+  //    const reader = new FileReader();
+  //    reader.onload = () => {
+  //      const newImages = [...images];
+  //      newImages[index] = reader.result as string;
+  //      setImages([...newImages, null]); // tambah slot upload baru di akhir
+  //    };
+  //    reader.readAsDataURL(file);
+  //  };
 
   
 
@@ -109,10 +108,15 @@ export default function PostProduct() {
                 Primary Product Image
               </span>
               {primaryImage ? (
-                <img
+                // <img
+                //   src={URL.createObjectURL(primaryImage)}
+                //   alt="Primary"
+                //   className="object-cover w-full h-full rounded-lg"
+                // />
+                <Image
+                  className="object-cover w-full h-full rounded-lg"
                   src={URL.createObjectURL(primaryImage)}
                   alt="Primary"
-                  className="object-cover w-full h-full rounded-lg"
                 />
               ) : (
                 <Image
@@ -141,10 +145,16 @@ export default function PostProduct() {
                   className="border-2 border-dashed border-red-500 w-21 h-[80px] flex items-center justify-center cursor-pointer "
                 >
                   {img ? (
-                    <img
+                    // <img
+                    //   src={URL.createObjectURL(img)}
+                    //   alt={`Other-${i}`}
+                    //   className="object-cover w-full h-full rounded-lg"
+                    // />
+                    <Image
+                      className="object-cover w-full h-full rounded-lg"
+                      //onClick={() => router.push("/")}
                       src={URL.createObjectURL(img)}
                       alt={`Other-${i}`}
-                      className="object-cover w-full h-full rounded-lg"
                     />
                   ) : (
                     <Image
@@ -167,10 +177,15 @@ export default function PostProduct() {
                   key={i}
                   className="border-1 border-dashed border-red-500 w-[85px] h-[80px] flex items-center justify-center "
                 >
-                  <img
+                  {/* <img
                     src={URL.createObjectURL(img)}
                     alt={`Other-${i}`}
                     className="object-cover w-full h-full rounded-xs"
+                  /> */}
+                  <Image
+                    className="object-cover w-full h-full rounded-xs"
+                    src={URL.createObjectURL(img)}
+                    alt={`Other-${i}`}
                   />
                 </div>
               ))}

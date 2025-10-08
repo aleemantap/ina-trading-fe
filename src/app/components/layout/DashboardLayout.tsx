@@ -3,10 +3,10 @@
 // import Link from "next/link";
 import { ReactNode } from "react";
 // import { LogOut, Settings, ShoppingBag, BarChart3 } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/store/store";
-import { logout } from "../../../store/authSlice";
+// import { useRouter } from "next/navigation";
+// import { useDispatch } from "react-redux";
+// import { AppDispatch } from "@/store/store";
+// import { logout } from "../../../store/authSlice";
 import Image from "next/image";
 // import { Icons } from "../icons/index";
 import NavLeft from "./NavLeft"
@@ -15,14 +15,14 @@ interface Props {
 }
 
 export default function DashboardLayout({ children }: Props) {
-   const dispatch = useDispatch<AppDispatch>();
-   const router = useRouter();
+  //  const dispatch = useDispatch<AppDispatch>();
+  //  const router = useRouter();
 
-   const handleLogout = () => {
-    //  console.log("handleLogout");
-     dispatch(logout());
-     router.push("/login");
-   };
+  //  const handleLogout = () => {
+  //   //  console.log("handleLogout");
+  //    dispatch(logout());
+  //    router.push("/login");
+  //  };
 
   return (
     <div className="flex flex-col h-screen">
@@ -70,11 +70,15 @@ export default function DashboardLayout({ children }: Props) {
             </div>
           </button>
           <div className="flex items-center space-x-2">
-            <img
+            
+            <Image
               src="https://i.pravatar.cc/40"
-              alt="user"
-              className="w-6 h-6 rounded-full"
+              alt="Logo"
+              width={55}
+              height={55}
+              className="rounded-full"
             />
+
             <span className="text-sm">Wira Basalamah</span>
             <div className="mt-1">
               <svg

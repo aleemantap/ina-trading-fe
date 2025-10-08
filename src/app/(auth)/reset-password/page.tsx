@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
-
+import Image from "next/image";
+import logo from "../../../../public/logo.png";
 export default function ResetPasswordPage() {
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
@@ -21,7 +22,7 @@ export default function ResetPasswordPage() {
       <div className="w-full max-w-3xl rounded-lg border bg-white p-8 shadow">
         {/* Logo */}
         <div className="mb-6 flex justify-center">
-          <img src="/logo.png" alt="Logo" className="h-10" />
+          <Image className="h-22 w-54" src={logo} alt="logo" />;
         </div>
 
         {/* Title */}

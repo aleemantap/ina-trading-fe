@@ -1,14 +1,14 @@
 "use client";
 
-import { useState } from "react";
+// import { useState } from "react";
 
 export default function AccountNotFoundPage() {
-  const [email, setEmail] = useState("");
+  // const [email, setEmail] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    //console.log("Kirim reset password ke:", email);
-  };
+  // const handleSubmit = (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   //console.log("Kirim reset password ke:", email);
+  // };
 
   return (
     <>

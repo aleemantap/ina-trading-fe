@@ -6,7 +6,7 @@
 // };
 
 //export default nextConfig;
-import type { NextConfig } from "next";
+// import type { NextConfig } from "next";
 
 // const nextConfig: NextConfig = {
 //   output: "standalone", // ✅ untuk build deploy (ringan, tanpa node_modules besar)
@@ -35,6 +35,9 @@ const nextConfig = {
     ];
   },
   output: "standalone",
+  images: {
+    domains: ["i.pravatar.cc", "picsum.photos"],
+  },
 };
 
 export default nextConfig;

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Trash2, Search, ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
 
 const TABS = [
   "All Product",
@@ -50,7 +51,7 @@ const DataTable = () => {
     page * itemsPerPage
   );
 
-  const handlePageChange = (newPage: any) => {
+  const handlePageChange = (newPage: number) => {
     if (newPage >= 1 && newPage <= totalPages) setPage(newPage);
   };
 
@@ -130,10 +131,12 @@ const DataTable = () => {
                 className="border-b hover:bg-gray-50 transition"
               >
                 <td className="p-3 flex items-center gap-3">
-                  <img
+                  <Image
                     src={product.image}
                     alt={product.name}
-                    className="w-11 h-12 rounded-sm object-cover"
+                    width={"52"}
+                    height={"53"}
+                    className="rounded-sm object-cover"
                   />
                   <span className="font-medium">{product.name}</span>
                 </td>

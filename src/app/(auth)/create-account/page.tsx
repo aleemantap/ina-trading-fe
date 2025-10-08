@@ -6,7 +6,8 @@ import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../../../store/store";
 import { registerUser } from "../../../store/authSlice"; 
-
+import Image from "next/image";
+import logo from "../../../../public/logo.png";
 
 export default function CreateAccountForm() {
   const [form, setForm] = useState({
@@ -22,7 +23,7 @@ export default function CreateAccountForm() {
   const [errors, setErrors] = useState<string | null>(null);
   const dispatch = useDispatch<AppDispatch>();
 
-   const { loading, error, user } = useSelector(
+   const { loading,  user } = useSelector(
      (state: RootState) => state.auth
    );
 
@@ -62,7 +63,11 @@ export default function CreateAccountForm() {
   return (
     <>
       <div className="mb-0">
-        <img src="/logo.png" alt="Logo" className="h-22" />
+        <Image
+          className="h-22 w-54"
+          src={logo}
+          alt="logo"
+        />
       </div>
       <div className="max-w-md mx-auto bg-white rounded-lg shadow border p-6">
         <h2 className="text-2xl font-semibold mb-4">Create Account</h2>
@@ -150,7 +155,6 @@ export default function CreateAccountForm() {
             </div>
           </div>
 
-       
           {/* Error Message */}
           {errors && (
             <p className="text-red-600 text-sm font-medium text-center">
