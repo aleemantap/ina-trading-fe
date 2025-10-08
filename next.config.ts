@@ -29,7 +29,8 @@ const nextConfig = {
     return [
       {
         source: "/api/:path*",
-        destination: "http://34.101.223.0:8080/api/:path*",
+        //destination: "http://34.101.223.0:8080/api/:path*",
+        destination: process.env.NEXT_PUBLIC_IP_ADDRESS + "/api/:path*",
       },
     ];
   },

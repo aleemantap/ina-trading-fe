@@ -18,6 +18,7 @@ interface AuthState {
   token: string | null;
   loading: boolean;
   error: string | null;
+  data: string | null;
 }
 
 const initialState: AuthState = {
@@ -25,20 +26,35 @@ const initialState: AuthState = {
   token: null,
   loading: false,
   error: null,
+  data : null,
 };
 
 export const login = createAsyncThunk(
   "auth/login",
   async (
-    { email, password }: { email: string; password: string },
+    { username, password }: { username: string; password: string },
     thunkAPI
   ) => {
     try {
-      const response = await apiPublic.post("/seller/login", { email, password });
-      // console.log("response-", response.data)
+      const response = await apiPublic.post(
+        "/seller/login",
+        {},
+        {
+          headers: {
+            "Content-Type" : "application/json",
+            "Authorization": `Basic ${btoa(`${username}:${password}`)}`,
+            "Reference-Number": "REF20230708100000001",
+            "Channel-Id": "WEB",
+            "Origin": "local",//"http://localhost:3000",
+            "Request-Time": "2023-07-08 10:00:00",
+          },
+        }
+      );
+       console.log("response-", response.data)
       return response.data;
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
+    
       return thunkAPI.rejectWithValue(
         err.response?.data?.message || "Login failed, please try again"
       );
@@ -54,7 +70,16 @@ export const registerUser = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const res = await apiPublic.post("/seller/register", data);
+      const res = await apiPublic.post("/seller/register", data, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhbGVlbWFudGFwQGdtYWlsLmNvbSIsImlzcyI6ImF1dGgwIiwiZXhwIjoxNzU5OTI0NjkwfQ.kWKr4qRK7LVNEZ0krwYnTvBaND4sk8f9PF68tZ5b-xQ`,
+          "Reference-Number": "REF20230708100000001",
+          "Channel-Id": "WEB",
+          Origin: "local", //"http://localhost:3000",
+          "Request-Time": "2023-07-08 10:00:00",
+        },
+      });
       return res.data; // { user, token }
     } catch (err) {
       const error = err as AxiosError<{ responseDesc?: string }>; // ✅ perbaikan utama
@@ -91,13 +116,18 @@ const authSlice = createSlice({
     });
     builder.addCase(login.fulfilled, (state, action) => {
       state.loading = false;
-      state.user = action.payload;
+      //state.user = action.payload.user;
+      //state.token = action.payload.token.token;
+      //localStorage.setItem("token", action.payload.token.token);
+
+      state.user = action.payload.data;
       state.token = action.payload.data.session;
-      localStorage.setItem("token", action.payload.token.token);
+      localStorage.setItem("token", action.payload.data.session);
     });
     builder.addCase(login.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload as string;
+      //  console.log(action.payload);
     });
 
     // register
@@ -110,8 +140,11 @@ const authSlice = createSlice({
       state.loading = false;
       state.user = action.payload;
       // state.user = action.payload.user;
-      // state.token = action.payload.token;
-      // localStorage.setItem("token", action.payload.token);
+      state.data = action.payload.responseDesc;
+        console.log(
+          "action.payload.responseDesc ",
+          action.payload.responseDesc
+        );
     });
     builder.addCase(registerUser.rejected, (state, action) => {
       state.loading = false;

@@ -18,7 +18,7 @@ export default function LoginPage() {
     const dispatch = useDispatch<AppDispatch>();
     const router = useRouter();
 
-    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     // const dispatch = useDispatch<AppDispatch>();
     //   const { loading, error } = useSelector((state: RootState) => state.auth);
@@ -29,7 +29,7 @@ export default function LoginPage() {
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
-        dispatch(login({ email, password }));
+        dispatch(login({ username, password }));
     };
 
     useEffect(() => {
@@ -50,9 +50,9 @@ export default function LoginPage() {
             Email or mobile phone number
           </label>
           <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             className="w-full rounded border border-zinc-200  bg-white px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
           />
         </div>
