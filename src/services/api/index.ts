@@ -58,8 +58,8 @@ const getBaseURL = () => {
   //   return '/api/backend'; // Path ke proxy Anda
   // }
   // Jika production, gunakan direct URL
-  // return process.env.NEXT_PUBLIC_IP_ADDRESS + "/api/v1.0";
-   return "http://34.87.25.74:8080/api/v1.0";
+  return process.env.NEXT_PUBLIC_IP_ADDRESS + "/api/v1.0";
+   //return "http://34.87.25.74:8080/api/v1.0";
 };
 
 const baseURL = getBaseURL();
