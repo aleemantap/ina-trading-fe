@@ -8,6 +8,9 @@ import { ReactNode } from "react";
 // import { AppDispatch } from "@/store/store";
 // import { logout } from "../../../store/authSlice";
 import Image from "next/image";
+import { useSelector } from "react-redux";
+import { RootState } from  "../../store/store";
+
 // import { Icons } from "../icons/index";
 import NavLeft from "./NavLeft"
 interface Props {
@@ -15,6 +18,17 @@ interface Props {
 }
 
 export default function DashboardLayout({ children }: Props) {
+
+  const {
+    user,
+    //loading,
+    //error,
+  } = useSelector((state: RootState) => state.auth);
+
+  //console.log("data2 =", user?.name)
+  
+    // const session = useSelector((state) => state);
+
   //  const dispatch = useDispatch<AppDispatch>();
   //  const router = useRouter();
 
@@ -70,16 +84,15 @@ export default function DashboardLayout({ children }: Props) {
             </div>
           </button>
           <div className="flex items-center space-x-2">
-            
             <Image
               src="https://i.pravatar.cc/40"
               alt="Logo"
-              width={55}
-              height={55}
+              width={30}
+              height={30}
               className="rounded-full"
             />
 
-            <span className="text-sm">Wira Basalamah</span>
+            <span className="text-sm">{user?.name}</span>
             <div className="mt-1">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -107,7 +120,7 @@ export default function DashboardLayout({ children }: Props) {
         <NavLeft />
 
         {/* MAIN CONTENT */}
-        <main className="flex-1 p-0 bg-white overflow-y-auto px-10">
+        <main className="flex-1 p-0 bg-white overflow-y-auto px-1">
           {children}
         </main>
       </div>

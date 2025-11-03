@@ -10,20 +10,20 @@ import { usePathname } from "next/navigation";
 // import { LuLayoutDashboard } from "react-icons/lu";
 // import { RiProductHuntLine } from "react-icons/ri";
 import { FiChevronDown, FiChevronRight } from "react-icons/fi";
-import product from "../../../assets/product.png";
-import overview from "../../../assets/overview.png";
-import checkout from "../../../assets/checkout.png";
-import setting from "../../../assets/setting.png";
-import Info from "../../../assets/info.png";
-import contact from "../../../assets/contact.png";
-import signout from "../../../assets/logout.png";
+import product from "../../assets/product.png";
+import overview from "../../assets/overview.png";
+import checkout from "../../assets/checkout.png";
+import setting from "../../assets/setting.png";
+import Info from "../../assets/info.png";
+import contact from "../../assets/contact.png";
+import signout from "../../assets/logout.png";
 
 import Image from "next/image";
 
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store/store";
-import { logout } from "../../../store/authSlice";
+import { logout } from "../../store/authSlice";
 const menuItems = [
   { name: "Overview", href: "/dashboard", icon: overview },
   {
