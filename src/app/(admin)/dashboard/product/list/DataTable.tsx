@@ -1,7 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Trash2, Search, ChevronLeft, ChevronRight } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "../../../../../store";
 import Image from "next/image";
-
+import Link from "next/link";
+import {
+  fetchProducts,
+  setPage,
+  setParam,
+  setUrl,
+} from "../../../../../store/reducers/product/productSlice";
 const TABS = [
   "All Product",
   "Draft",
@@ -9,55 +17,59 @@ const TABS = [
   "Local Market",
   "Out of Stock",
 ];
-
-const generateProducts = () => {
-  return Array.from({ length: 200 }, (_, i) => ({
-    id: i + 1,
-    name: `Product ${i + 1}`,
-    image: `https://picsum.photos/seed/${i + 1}/60`,
-    price: (Math.random() * 500000).toFixed(0),
-    stock: Math.floor(Math.random() * 500),
-    market: i % 2 === 0 ? "Local" : "International",
-  }));
+const TAB_URL_MAP: Record<string, string> = {
+  "All Product": "/seller/product",
+  "Draft": "/seller/draft/product",
+  "International": "/seller/international/product",
+  "Local Market": "/seller/local/product", 
+  "Out of Stock": "/seller/outofstock/product", 
+};
+const TAB_URL_MAP_ADMIN: Record<string, string> = {
+  "All Product": "/product",
+  "Draft": "/admin/draft/product",
+  "International": "/admin/international/product",
+  "Local Market": "/admin/local/product",
+  "Out of Stock": "/admin/outofstock/product",
 };
 
 const DataTable = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const [activeTab, setActiveTab] = useState("All Product");
-  const [search, setSearch] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [page, setPage] = useState(1);
-
-  const itemsPerPage = 10;
-  const data = generateProducts();
-
-  const filteredTab =
-    activeTab === "All Product"
-      ? data
-      : activeTab === "Draft"
-      ? data.filter((_, i) => i % 5 === 0)
-      : activeTab === "International"
-      ? data.filter((p) => p.market === "International")
-      : activeTab === "Local Market"
-      ? data.filter((p) => p.market === "Local")
-      : data.filter((p) => p.stock === 0);
-
-  const filtered = filteredTab.filter((p) =>
-    p.name.toLowerCase().includes(searchQuery.toLowerCase())
+  const { loading, rows, error, page, totalPage, param } = useSelector(
+    (state: RootState) => state.product
   );
+  const { user } = useSelector((state: RootState) => state.auth);
+  const [query, setQuery] = useState(param);
 
-  const totalPages = Math.ceil(filtered.length / itemsPerPage);
-  const paginated = filtered.slice(
-    (page - 1) * itemsPerPage,
-    page * itemsPerPage
-  );
+  useEffect(() => {
+    let baseUrl = "/product";
+    if (user?.userType === "SELLER") {
+      // Tentukan URL berdasarkan tab aktif
+      baseUrl = TAB_URL_MAP[activeTab] || "/seller/product";
+    }
+     if (user?.userType === "ADMIN") {
+       // Tentukan URL berdasarkan tab aktif
+       baseUrl = TAB_URL_MAP_ADMIN[activeTab] || "/product";
+     }
+    dispatch(setUrl(baseUrl));
+    dispatch(fetchProducts({ page, size: 10, param }));
+  }, [dispatch, page, param, user, activeTab]);
 
-  const handlePageChange = (newPage: number) => {
-    if (newPage >= 1 && newPage <= totalPages) setPage(newPage);
+  const handleTabClick = (tab: string) => {
+    setActiveTab(tab);
   };
 
-  const handleSearch = () => {
-    setSearchQuery(search);
-    setPage(1);
+  const handlePageChange = (newPage: number) => {
+    if (newPage >= 1 && newPage <= totalPage) {
+      dispatch(setPage(newPage));
+    }
+  };
+
+  const handleSearch = (e: React.FormEvent) => {
+    //console.log(query);
+    e.preventDefault();
+    dispatch(setPage(1)); // reset ke halaman 1
+    dispatch(setParam(query.trim()));
   };
 
   return (
@@ -70,7 +82,7 @@ const DataTable = () => {
             <button
               key={tab}
               onClick={() => {
-                setActiveTab(tab);
+                handleTabClick(tab);
                 setPage(1);
               }}
               className={`w-33 rounded-tl-md  rounded-bl-md rounded-tr-md rounded-br-md  relative pl-1 pr-6 py-2 text-sm font-semibold border border-gray-300 
@@ -100,8 +112,8 @@ const DataTable = () => {
             type="text"
             placeholder="Search your product"
             className="flex-1 px-3 py-2 text-sm focus:outline-none"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
           />
           <button
             onClick={handleSearch}
@@ -117,54 +129,116 @@ const DataTable = () => {
         <table className="w-full border-collapse">
           <thead>
             <tr className="text-left border-b h-15">
-              <th className="p-3 text-[#808080] font-medium">PRODUCT</th>
-              <th className="p-3 text-[#808080] font-medium">PRICE</th>
-              <th className="p-3 text-[#808080] font-medium">STOCK</th>
-              <th className="p-3 text-[#808080] font-medium">MARKET</th>
-              <th className="p-3 text-[#808080] font-medium"></th>
+              <th className="p-1 text-[#808080] font-medium">PRODUCT</th>
+              <th className="p-1 text-[#808080] font-medium">PRICE</th>
+              <th className="p-1 text-[#808080] font-medium">STOCK</th>
+              <th className="p-1 text-[#808080] font-medium">MARKET</th>
+              <th className="p-1 text-[#808080] font-medium"></th>
             </tr>
           </thead>
           <tbody>
-            {paginated.map((product) => (
-              <tr
-                key={product.id}
-                className="border-b hover:bg-gray-50 transition"
-              >
-                <td className="p-3 flex items-center gap-3">
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    width={"52"}
-                    height={"53"}
-                    className="rounded-sm object-cover"
-                  />
-                  <span className="font-medium">{product.name}</span>
-                </td>
-                <td className="p-3">
-                  Rp {Number(product.price).toLocaleString()}
-                </td>
-                <td className="p-3">{product.stock}</td>
-                <td className="p-3">
-                  <div
-                    className={` text-[#2C742F] p-2 rounded-md border  text-center font-medium ${
-                      product.market == "International"
-                        ? "bg-[#a9f2ab]"
-                        : "bg-[#afaff1]"
-                    }`}
-                  >
-                    {product.market}
+            {loading ? (
+              <tr>
+                <td colSpan={5} className="p-8 text-center">
+                  <div className="flex justify-center items-center">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                    <span className="ml-3 text-gray-600">
+                      Loading products...
+                    </span>
                   </div>
                 </td>
-                <td className="p-3 items-center gap-2">
-                  <button className="px-10 py-2 text-sm bg-[#00B207] text-white rounded-full hover:bg-blue-700 font-semibold">
-                    See Detail
-                  </button>
-                  <button className="p-2 hover:bg-gray-100 rounded-md text-gray-500">
-                    <Trash2 size={16} />
-                  </button>
+              </tr>
+            ) : error ? (
+              <tr>
+                <td colSpan={5} className="p-8 text-center">
+                  <div className="text-red-500">
+                    <p className="font-medium">Error loading products</p>
+                    <p className="text-sm mt-1">{error}</p>
+                    <button
+                      onClick={() =>
+                        dispatch(fetchProducts({ page, size: 10, param }))
+                      }
+                      className="mt-3 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
+                    >
+                      Try Again
+                    </button>
+                  </div>
                 </td>
               </tr>
-            ))}
+            ) : !rows || rows.length === 0 ? (
+              <tr>
+                <td colSpan={5} className="p-8 text-center">
+                  <div className="text-gray-500">
+                    <p className="font-medium">No products found</p>
+                    <p className="text-sm mt-1">
+                      {param
+                        ? `No results for "${param}"`
+                        : "No products available for this tab"}
+                    </p>
+                    {param && (
+                      <button
+                        onClick={() => {
+                          setQuery("");
+                          dispatch(setParam(""));
+                        }}
+                        className="mt-3 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 text-sm"
+                      >
+                        Clear Search
+                      </button>
+                    )}
+                  </div>
+                </td>
+              </tr>
+            ) : (
+              // Render actual data rows
+              rows.map((product) => (
+                <tr
+                  key={product.id}
+                  className="border-b hover:bg-gray-50 transition"
+                >
+                  <td className="p-1 flex items-center gap-0">
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      width={"52"}
+                      height={"53"}
+                      className="rounded-sm object-cover"
+                    />
+                    <span className="font-medium">{product.name}</span>
+                  </td>
+                  <td className="p-1">
+                    Rp {product.minPrice?.toLocaleString()} - Rp{" "}
+                    {product.maxPrice?.toLocaleString()}
+                  </td>
+                  <td className="p-1">{product.totalStock}</td>
+                  <td className="p-1 ">
+                    <button
+                      className={` text-[#2C742F] px-3 py-1 rounded-md border text-xs text-center  ${
+                        product.market == "International"
+                          ? "bg-[#a9f2ab]"
+                          : "bg-[#afaff1]"
+                      }`}
+                    >
+                      {product.market}
+                    </button>
+                  </td>
+                  <td className="p-1">
+                    <div className="flex items-center">
+                      <Link
+                        href={`/dashboard/product/${product.id}`}
+                        //href={`/orders/tracking/${order.id}`} // contoh: bisa pakai id order
+                        className="bg-green-500 text-white rounded-full text-xs px-5 py-1 hover:bg-sky-500 transition"
+                      >
+                        See Detail
+                      </Link>
+                      <button className="p-3  hover:bg-gray-100 rounded-md text-gray-500">
+                        <Trash2 size={18} />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
 
@@ -178,7 +252,7 @@ const DataTable = () => {
             <ChevronLeft />
           </button>
 
-          {Array.from({ length: totalPages })
+          {Array.from({ length: totalPage })
             .slice(0, 5)
             .map((_, i) => (
               <button
@@ -197,19 +271,19 @@ const DataTable = () => {
           <span className="mx-1">...</span>
 
           <button
-            onClick={() => handlePageChange(totalPages)}
+            onClick={() => handlePageChange(totalPage)}
             className={`w-8 h-8 flex items-center justify-center rounded-full text-sm ${
-              page === totalPages
+              page === totalPage
                 ? "bg-blue-600 text-white"
                 : "text-gray-700 hover:bg-gray-100"
             }`}
           >
-            {totalPages}
+            {totalPage}
           </button>
 
           <button
             onClick={() => handlePageChange(page + 1)}
-            disabled={page === totalPages}
+            disabled={page === totalPage}
             className="w-8 h-8 flex items-center justify-center rounded-full border border-gray-300 text-gray-500 disabled:opacity-40"
           >
             <ChevronRight />

@@ -19,12 +19,6 @@ export default function OrdersPage() {
     console.log("Searching orders for:", query);
   };
 
-  // contoh data dummy
-  // const orders = [
-  //   { id: 1, customer: "Ali", total: 250000, status: "Pending" },
-  //   { id: 2, customer: "Budi", total: 500000, status: "Completed" },
-  //   { id: 3, customer: "Citra", total: 150000, status: "Cancelled" },
-  // ];
 
   return (
     <div className="p-6">

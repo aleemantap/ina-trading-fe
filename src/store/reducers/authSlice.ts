@@ -11,6 +11,8 @@ interface User {
   id: number;
   name: string;
   email: string;
+  userType: string;
+  isSellerActive: boolean;
 }
 
 interface AuthState {
@@ -19,6 +21,7 @@ interface AuthState {
   loading: boolean;
   error: string | null;
   data: string | null;
+ 
 }
 
 const initialState: AuthState = {
@@ -26,8 +29,25 @@ const initialState: AuthState = {
   token: null,
   loading: false,
   error: null,
-  data : null,
+  data: null,
+ 
 };
+
+const syncTokenToCookie = (token: string) => {
+  // Hanya jalankan di client side
+  if (typeof window !== "undefined") {
+    document.cookie = `token=${token}; path=/; max-age=${
+      60 * 60 * 24
+    }; SameSite=Lax`;
+  }
+};
+
+const clearTokenCookie = () => {
+  if (typeof window !== "undefined") {
+    document.cookie = "token=; path=/; max-age=0";
+  }
+};
+
 
 export const login = createAsyncThunk(
   "auth/login",
@@ -62,7 +82,7 @@ export const login = createAsyncThunk(
   }
 );
 
-// ✅ Thunk untuk register
+// Thunk untuk register
 export const registerUser = createAsyncThunk(
   "auth/registerUser",
   async (
@@ -82,7 +102,7 @@ export const registerUser = createAsyncThunk(
       });
       return res.data; // { user, token }
     } catch (err) {
-      const error = err as AxiosError<{ responseDesc?: string }>; // ✅ perbaikan utama
+      const error = err as AxiosError<{ responseDesc?: string }>; // perbaikan utama
       return rejectWithValue(
         error.response?.data?.responseDesc || "Register failed"
       );
@@ -99,14 +119,26 @@ const authSlice = createSlice({
       state.user = null;
       state.token = null;
       localStorage.removeItem("token");
+      clearTokenCookie();
     },
     setCredentials: (
       state,
-      action: PayloadAction<{ user: User; token: string }>
+      action: PayloadAction<{ user: User | null; token: string }>
     ) => {
       state.user = action.payload.user;
       state.token = action.payload.token;
+    
+      localStorage.setItem("token", action.payload.token);
+      syncTokenToCookie(action.payload.token);
     },
+    syncToken: (state) => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        state.token = token;
+        syncTokenToCookie(token);
+      }
+    },
+    
   },
   extraReducers: (builder) => {
     // login
@@ -119,10 +151,12 @@ const authSlice = createSlice({
       //state.user = action.payload.user;
       //state.token = action.payload.token.token;
       //localStorage.setItem("token", action.payload.token.token);
-
       state.user = action.payload.data;
       state.token = action.payload.data.session;
       localStorage.setItem("token", action.payload.data.session);
+      syncTokenToCookie(action.payload.data.session);
+     
+      //console.log("Login success - Token saved to cookie");
     });
     builder.addCase(login.rejected, (state, action) => {
       state.loading = false;
@@ -136,15 +170,14 @@ const authSlice = createSlice({
       state.error = null;
     });
     builder.addCase(registerUser.fulfilled, (state, action) => {
-     
       state.loading = false;
       state.user = action.payload;
       // state.user = action.payload.user;
       state.data = action.payload.responseDesc;
-        console.log(
-          "action.payload.responseDesc ",
-          action.payload.responseDesc
-        );
+      // console.log(
+      //   "action.payload.responseDesc ",
+      //   action.payload.responseDesc
+      // );
     });
     builder.addCase(registerUser.rejected, (state, action) => {
       state.loading = false;
@@ -153,5 +186,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout, setCredentials } = authSlice.actions;
+export const { logout, setCredentials, syncToken } = authSlice.actions;
 export default authSlice.reducer;

@@ -5,7 +5,7 @@ export default function LoginPage() {
   return (
     <>
       <div className="mb-0">
-        <Image className="h-22 w-54" src={logo} alt="logo" />;
+        <Image className="h-22 w-54" src={logo} alt="logo" />
       </div>
       <div className="flex  items-center justify-center">
         <div className="w-full max-w-md rounded bg-white p-6 shadow">

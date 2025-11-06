@@ -1,18 +1,3 @@
-// import OrderDetailHeader from "@/components/orders/OrderDetailHeader";
-
-// export default function OrderDetailPage() {
-//   return (
-//     <div className="p-6">
-//       <OrderDetailHeader orderId="1234" shippingType="Domestic" />
-
-//       {/* nanti isi detail order di bawah */}
-//       <p className="text-gray-500 text-sm">
-//         Here will be the order information...
-//       </p>
-//     </div>
-//   );
-// }
-
 import Image from "next/image";
 import Link from "next/link";
 

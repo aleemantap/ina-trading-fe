@@ -4,8 +4,8 @@ import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "../../../store/store";
-import { registerUser } from "../../../store/authSlice"; 
+import type { AppDispatch, RootState } from "../../../store";
+import { registerUser } from "../../../store/reducers/authSlice";
 import Image from "next/image";
 import logo from "../../../../public/logo.png";
 
@@ -23,9 +23,7 @@ export default function CreateAccountForm() {
   const [errors, setErrors] = useState<string | null>(null);
   const dispatch = useDispatch<AppDispatch>();
 
-   const { loading,  user } = useSelector(
-     (state: RootState) => state.auth
-   );
+  const { loading, user } = useSelector((state: RootState) => state.auth);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -34,26 +32,26 @@ export default function CreateAccountForm() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // ✅ Validasi konfirmasi password
+    // Validasi konfirmasi password
     if (form.password !== form.confirmPassword) {
       setErrors("Password dan konfirmasi password tidak sama!");
       return;
     }
 
-    // ✅ Validasi panjang minimal password
+    // Validasi panjang minimal password
     if (form.password.length < 6) {
       setErrors("Password minimal 6 karakter!");
       return;
     }
 
-     dispatch(
-       registerUser({
-         name: form.name,
-         email: form.email,
-         mobile: form.mobile,
-         password: form.password,
-       })
-     );
+    dispatch(
+      registerUser({
+        name: form.name,
+        email: form.email,
+        mobile: form.mobile,
+        password: form.password,
+      })
+    );
 
     // Jika semua validasi lolos
     //console.log("Form submitted:", form);
@@ -63,11 +61,7 @@ export default function CreateAccountForm() {
   return (
     <>
       <div className="mb-0">
-        <Image
-          className="h-22 w-54"
-          src={logo}
-          alt="logo"
-        />
+        <Image className="h-22 w-54" src={logo} alt="logo" />
       </div>
       <div className="max-w-md mx-auto bg-white rounded-lg shadow border p-6">
         <h2 className="text-2xl font-semibold mb-4">Create Account</h2>
@@ -170,11 +164,8 @@ export default function CreateAccountForm() {
 
           {/* Success Message */}
           {user && (
-            <p className="text-green-600 text-sm text-center">
-              Register berhasil untuk {user.name || "user"} 🎉
-            </p>
+            <p className="text-green-600 text-sm text-center">Register berhasil untuk {user.name || "user"}</p>
           )}
-
           {/* Submit */}
           <button
             type="submit"

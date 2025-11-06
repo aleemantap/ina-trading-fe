@@ -22,8 +22,8 @@ import Image from "next/image";
 
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/store/store";
-import { logout } from "../../store/authSlice";
+import { AppDispatch } from "@/store";
+import { logout } from "../../store/reducers/authSlice";
 const menuItems = [
   { name: "Overview", href: "/dashboard", icon: overview },
   {
@@ -43,17 +43,16 @@ export default function NavLeft() {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const pathname = usePathname();
-    const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
   const handleLogout = () => {
-      dispatch(logout());
-      router.push("/login");
+    dispatch(logout());
+    router.push("/login");
   };
-  
-  const toggleMenu = (name: string) => {
-     setOpenMenu(openMenu === name ? null : name);
-   };
 
-  
+  const toggleMenu = (name: string) => {
+    setOpenMenu(openMenu === name ? null : name);
+  };
+
   return (
     <aside className="ml-5 w-64 border-r bg-white min-h-screen flex flex-col justify-between">
       <nav className="flex flex-col">

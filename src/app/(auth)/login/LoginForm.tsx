@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 // import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "../../../store/store";
+import type { AppDispatch, RootState } from "../../../store";
 
-import { login } from  "../../../store/authSlice" //"@/features/auth/authSlice";
+import { login } from "../../../store/reducers/authSlice"; //"@/features/auth/authSlice";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
@@ -14,29 +14,28 @@ import { useRouter } from "next/navigation";
 // import { login } from "@/store/authSlice";
 
 export default function LoginPage() {
+  const dispatch = useDispatch<AppDispatch>();
+  const router = useRouter();
 
-    const dispatch = useDispatch<AppDispatch>();
-    const router = useRouter();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  // const dispatch = useDispatch<AppDispatch>();
+  //   const { loading, error } = useSelector((state: RootState) => state.auth);
+  const { loading, error, user } = useSelector(
+    (state: RootState) => state.auth
+  );
 
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    // const dispatch = useDispatch<AppDispatch>();
-    //   const { loading, error } = useSelector((state: RootState) => state.auth);
-    const { loading, error, user } = useSelector(
-        (state: RootState) => state.auth
-    );
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    dispatch(login({ username, password }));
+  };
 
-
-    const handleLogin = (e: React.FormEvent) => {
-        e.preventDefault();
-        dispatch(login({ username, password }));
-    };
-
-    useEffect(() => {
-        if (user) {
-        router.push("/dashboard");
-        }
-    }, [user, router]);
+  useEffect(() => {
+    console.log("user",user)
+    if (user) {
+      router.push("/dashboard");
+    }
+  }, [user, router]);
 
   return (
     <>

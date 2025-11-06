@@ -12,7 +12,7 @@ import StatsGroup from "../../../components/charts/StatsGroup";
 
 export default function DashboardHome() {
      
-
+// console.log(localStorage.getItem('token'))
   return (
       <div className="p-6">
         <h1 className="text-2xl font-bold mb-1">Welcome Back, Pendopo</h1>

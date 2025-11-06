@@ -36,7 +36,19 @@ const nextConfig = {
   },
   output: "standalone",
   images: {
-    domains: ["i.pravatar.cc", "picsum.photos"],
+    domains: ["i.pravatar.cc", "picsum.photos", "ina-be.iptek.co"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**.iptek.co", // Semua subdomain iptek.co
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: process.env.DOMAIN,
+        pathname: "/api/v1.0/file/image/**",
+      },
+    ],
   },
 };
 

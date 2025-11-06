@@ -3,6 +3,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+// import { useTokenSync } from "../store/useTokenSync";
+
 // import { Provider } from "react-redux";
 // import { store } from "../lib/store";
 import Providers from "./Providers";
@@ -27,6 +29,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // useTokenSync(); 
   return (
     <html lang="en">
       <body
