@@ -108,7 +108,6 @@ export default function DashboardLayout({ children }: Props) {
       {/* BODY: sidebar + main */}
       <div className="flex h-screen">
         <NavLeft />
-
         {/* MAIN CONTENT */}
         <main className="flex-1 p-0 bg-white overflow-y-auto px-1">
           {children}

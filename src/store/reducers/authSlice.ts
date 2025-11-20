@@ -66,7 +66,7 @@ export const login = createAsyncThunk(
             "Reference-Number": "REF20230708100000001",
             "Channel-Id": "WEB",
             "Origin": "local",//"http://localhost:3000",
-            "Request-Time": "2023-07-08 10:00:00",
+            "Request-Time": new Date().toISOString(),
           },
         }
       );

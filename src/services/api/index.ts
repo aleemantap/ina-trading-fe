@@ -35,31 +35,11 @@ export const apiPrivate = axios.create({
     "Reference-Number": "REF20230708100000001",
     "Channel-Id": "WEB",
     //Origin: "local", //"http://localhost:3000",
-    "Request-Time": "2023-07-08 10:00:00",
+    //"Request-Time": "2023-07-08 10:00:00",
+    "Request-Time": new Date().toISOString()
   },
 });
 
-// apiPrivate.interceptors.request.use(
-//   (config) => {
-//     const state = store.getState() as RootState;
-//     const token = state.auth.token;
-//     if (token) {
-//       config.headers.Authorization = `Bearer ${token}`;
-//     }
-//     return config;
-//   },
-//   (error) => Promise.reject(error)
-// );
-
-// apiPrivate.interceptors.response.use(
-//   (response) => response,
-//   (error) => {
-//     if (error.response?.status === 401) {
-//       store.dispatch(logout());
-//     }
-//     return Promise.reject(error);
-//   }
-// );
 
 
 // ====== REQUEST INTERCEPTOR ======
@@ -93,3 +73,24 @@ apiPrivate.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+/*
+apiPrivate.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      const refreshToken = localStorage.getItem("refreshToken");
+      if (refreshToken) {
+        const res = await apiPublic.post("/auth/refresh", { refreshToken });
+        localStorage.setItem("accessToken", res.data.accessToken);
+        originalRequest.headers.Authorization = `Bearer ${res.data.accessToken}`;
+        return apiPrivate(originalRequest);
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
+*/
